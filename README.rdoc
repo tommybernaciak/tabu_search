@@ -1,3 +1,5 @@
 == README
 
 Tabu Search algorithm for Vehicle Routing Problem with Time Windows - Master thesis project
+
+Author: Tomasz Bernaciak <tommybernaciak@gmail.com>
