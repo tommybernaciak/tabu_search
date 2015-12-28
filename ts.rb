@@ -8,5 +8,7 @@ require './lib/output_image.rb'
 require './lib/route.rb' 
 require './lib/vertex.rb' 
 
-g = Graph.new('./data/test.csv')
-OutputImage.new(g, 'test')
+depot, vertices = Graph.import_data('./data/test.csv')
+graph = Graph.new(depot, vertices)
+graph.initial_solution
+OutputImage.new(graph, 'initial_solution')

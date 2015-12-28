@@ -12,6 +12,4 @@ class Vertex
     @service_time = service_time
   end
 
-  private
-
 end

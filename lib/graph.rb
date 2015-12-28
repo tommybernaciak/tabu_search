@@ -1,24 +1,41 @@
 # @author Tomasz Bernaciak <tommybernaciak@gmail.com>
 class Graph
-	attr_reader :vertices, :depot
+	attr_reader :vertices, :depot, :routes, :solution
 	
-	def initialize(filename)
-    verts = import_data(filename)
-    @depot, @vertices = set_depot(verts)
+	def initialize(depot, vertices)
+    @depot, @vertices = depot, vertices
+    @vehicles_numer = 4
+    @solution = Array.new
+  end
+
+  def initial_solution
+    vertices = random_split(@vertices, @vehicles_numer)
+    generate_routes(vertices, @depot).each { |r| @solution << r }
   end
 
   private
 
-  def import_data(filename)
+  def random_split(array, number)
+    slice_size = (array.size/Float(number)).ceil
+    array.shuffle.each_slice(slice_size).to_a
+  end
+
+  def generate_routes(arrays, depot)
+    routes = Array.new
+    arrays.each { |arr| routes << Route.new(depot, arr) }
+    return routes
+  end
+
+  def self.import_data(filename)
     vertices = Array.new
     CSV.foreach(filename, col_sep: ',', headers: true) do |row|
       data = row.to_hash
       vertices << Vertex.new(data['id'].to_i, data['x_coord'].to_f, data['y_coord'].to_f, data['demand'].to_f, data['ready_time'].to_f, data['due_time'].to_f, data['service_time'].to_f )
     end
-    return vertices
+    return set_depot(vertices)
   end
 
-  def set_depot(vertices)
+  def self.set_depot(vertices)
     depot = vertices.first
     vertices.delete(depot)
     return depot, vertices
