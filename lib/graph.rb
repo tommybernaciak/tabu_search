@@ -4,13 +4,27 @@ class Graph
 	
 	def initialize(depot, vertices)
     @depot, @vertices = depot, vertices
-    @vehicles_numer = 4
+    @vehicles_numer = 2
     @solution = Array.new
   end
 
+  # shuffle vertices, split then to random arrays, generate routes and add them to solution
   def initial_solution
     vertices = random_split(@vertices, @vehicles_numer)
     generate_routes(vertices, @depot).each { |r| @solution << r }
+  end
+
+  # create a copy of graph object
+  def self.clone(graph)
+    new_graph = Graph.new(graph.depot, graph.vertices)
+    new_graph.clone_solution(graph)
+    return new_graph
+  end
+
+  def cost
+    cost = 0
+    @solution.each { |r| cost += r.cost }
+    return cost
   end
 
   private

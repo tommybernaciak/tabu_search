@@ -6,7 +6,7 @@ class OutputImage
     draw_image(filename)
   end
 
-  COLORS = ['#0000FF', '#FF0000', '#800000','#FFA000']
+  COLORS = ['#0000FF', '#FF0000', '#800080','#008000']
 
   def draw_image(filename)
     img = Magick::ImageList.new

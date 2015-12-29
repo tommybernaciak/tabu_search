@@ -12,4 +12,7 @@ class Vertex
     @service_time = service_time
   end
 
+  def self.euclidean_distance(v1, v2)
+    Math.sqrt( ( v1.x_coord - v2.x_coord ) ** 2.0 + ( v1.y_coord - v2.y_coord ) ** 2.0 )
+  end
 end

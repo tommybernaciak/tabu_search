@@ -16,4 +16,10 @@ class Route
     return route
   end
 
+  def cost
+    cost = 0
+    (@route.size - 1).times { |i| cost += Vertex.euclidean_distance(@route[i], @route[i+1]) }
+    return cost
+  end
+
 end
