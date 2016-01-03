@@ -22,4 +22,30 @@ class Route
     return cost
   end
 
+  def random_node
+    @vertices.shuffle.first
+  end
+
+  def find_closest(vertex)
+    closest = @vertices.first
+    closest_distance = Vertex.euclidean_distance(vertex, closest)
+    @vertices.each do |v|
+      distance = Vertex.euclidean_distance(vertex, v)
+      if distance < closest_distance
+        closest_distance = distance
+        closest = v
+      end
+    end
+    return closest
+  end
+
+  def add_node(vertex, position_vertex)
+    position = @route.index(position_vertex)
+    @route.insert(position, vertex)
+  end
+
+  def delete_node(vertex)
+    @route.delete(vertex)
+  end
+
 end

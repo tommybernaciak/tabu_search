@@ -4,7 +4,7 @@ class Graph
 	
 	def initialize(depot, vertices)
     @depot, @vertices = depot, vertices
-    @vehicles_numer = 2
+    @vehicles_numer = 3
     @solution = Array.new
   end
 
@@ -21,10 +21,21 @@ class Graph
     return new_graph
   end
 
+  # caluculate cost of solution
   def cost
     cost = 0
     @solution.each { |r| cost += r.cost }
     return cost
+  end
+
+  # create a new solution with the same routes
+  def clone_solution(graph)
+    graph.solution.each { |route| @solution << Route.new(route.depot, route.vertices) }
+  end
+
+  def random_routes
+    random1, random2 = @solution.sample(2)
+    return random1, random2
   end
 
   private
@@ -34,9 +45,9 @@ class Graph
     array.shuffle.each_slice(slice_size).to_a
   end
 
-  def generate_routes(arrays, depot)
+  def generate_routes(arrays_of_vertices, depot)
     routes = Array.new
-    arrays.each { |arr| routes << Route.new(depot, arr) }
+    arrays_of_vertices.each { |arr| routes << Route.new(depot, arr) }
     return routes
   end
 
