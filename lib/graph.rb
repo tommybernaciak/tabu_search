@@ -1,40 +1,44 @@
 # @author Tomasz Bernaciak <tommybernaciak@gmail.com>
 class Graph
-	attr_reader :vertices, :depot, :routes, :solution
+	attr_accessor :vertices, :depot, :routes, :solution
 	
-	def initialize(depot, vertices)
-    @depot, @vertices = depot, vertices
+  def initialize(depot, vertices)
+    @depot = depot
+    @vertices = vertices
     @vehicles_numer = 3
-    @solution = Array.new
+    @solution = []
   end
 
   # shuffle vertices, split then to random arrays, generate routes and add them to solution
   def initial_solution
     vertices = random_split(@vertices, @vehicles_numer)
-    generate_routes(vertices, @depot).each { |r| @solution << r }
-  end
-
-  # create a copy of graph object
-  def self.clone(graph)
-    new_graph = Graph.new(graph.depot, graph.vertices)
-    new_graph.clone_solution(graph)
-    return new_graph
+    generate_routes(vertices, @depot).each { |route| @solution << route }
   end
 
   # caluculate cost of solution
   def cost
     cost = 0
-    @solution.each { |r| cost += r.cost }
+    @solution.each { |route| cost += route.cost }
     return cost
   end
 
-  # create a new solution with the same routes
-  def clone_solution(graph)
-    graph.solution.each { |route| @solution << Route.new(route.depot, route.vertices) }
+  # create a copy of graph object
+  def self.clone_graph(graph)
+    new_graph = Graph.new(graph.depot, graph.vertices)
+    graph.solution.each do |route| 
+      new_route = Route.clone_route(route)
+      new_graph.solution << new_route
+    end
+    return new_graph
   end
 
+  # select random two routes, unless random1 has less than two vertices
   def random_routes
     random1, random2 = @solution.sample(2)
+    loop do
+      random1, random2 = @solution.sample(2)
+      break unless random1.vertices.size < 2
+    end
     return random1, random2
   end
 
@@ -51,6 +55,7 @@ class Graph
     return routes
   end
 
+  # import graph from csv
   def self.import_data(filename)
     vertices = Array.new
     CSV.foreach(filename, col_sep: ',', headers: true) do |row|
@@ -60,6 +65,7 @@ class Graph
     return set_depot(vertices)
   end
 
+  # set first vertex as depot
   def self.set_depot(vertices)
     depot = vertices.first
     vertices.delete(depot)

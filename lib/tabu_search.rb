@@ -4,17 +4,16 @@ class TabuSearch
   def initialize(graph)
     @graph = graph
     @tabu_list_size = 7
-    @max_iteration = 5
+    @max_iteration = 200
   end
 
   def run
-    current = Graph.clone(@graph)
-    best = Graph.clone(@graph)
-    tabu_list = Array.new(@tabu_list_size)
-    
+    tabu_list = Array.new( @tabu_list_size )
+    current = Graph.clone_graph(@graph)
+    best = Graph.clone_graph(current)
+    #candidate = Graph.clone( current )
     @max_iteration.times do
-      candidate = Graph.clone(current)
-      
+      candidate = Graph.clone_graph(current)
       # tabu search
       # choose two random routes
       route1, route2 = candidate.random_routes
@@ -26,13 +25,22 @@ class TabuSearch
       route2.add_node(node1, node2)
       route1.delete_node(node1)
 
+      # puts "CHECK:"
+      # puts route2.path
+      # puts "-----"
+      # puts route2.depot
+      # puts route2.vertices
+      # puts route2.depot
+      # puts "______"
+      # TUTAJ JEST BŁĄD - ZAMIENIA SIĘ PATH ale VERTICES Zostaje początkowe
+
+
       if candidate.cost < current.cost
-        current = candidate
-        best = candidate #if candidate.cost < best.cost
+        current = Graph.clone_graph(candidate)
+        best = Graph.clone_graph(candidate) if candidate.cost < best.cost
       # add candidate to tabu list (check size)
       end
     end
-
     return best
   end
 

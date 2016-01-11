@@ -14,6 +14,6 @@ graph = Graph.new(depot, vertices)
 graph.initial_solution
 puts "initial solution cost: #{graph.cost}"
 OutputImage.new(graph, 'initial_solution')
-new_graph = TabuSearch.new(graph).run 
-puts "result solution cost: #{new_graph.cost}"
-OutputImage.new(new_graph, 'result')
+result_graph = TabuSearch.new(graph).run 
+puts "result solution cost: #{result_graph.cost}"
+OutputImage.new(result_graph, 'result')

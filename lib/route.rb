@@ -1,31 +1,44 @@
 # @author Tomasz Bernaciak <tommybernaciak@gmail.com>
 class Route
-  attr_reader :depot, :vertices, :route
+  attr_accessor :depot, :vertices, :path
 	
-	def initialize(depot, vertices)
+  def initialize(depot, vertices)
     @depot = depot
     @vertices = vertices
-    @route = create_route
+    @path = []
+    create_path
   end
 
-  def create_route
-    route = Array.new
-    @vertices.each { |v| route << v }
-    route.insert(0, @depot)
-    route << @depot
-    return route
+  def create_path
+    # clear previous path
+    @path = []
+    @vertices.each { |vertex| @path.push(vertex) }
+    @path.insert(0, @depot)
+    @path.push(@depot)
   end
 
+  def self.clone_route(route)
+    puts "------------------"
+    puts "---cloned route #{route.cost}"
+    new_route = Route.new(route.depot, route.vertices)
+    puts "---new_route: #{new_route.cost}"
+    puts "---- ERROR !!!" unless route.cost == new_route.cost 
+    return new_route
+  end
+
+  # caluculate distance of full path
   def cost
     cost = 0
-    (@route.size - 1).times { |i| cost += Vertex.euclidean_distance(@route[i], @route[i+1]) }
+    (@path.size - 1).times { |i| cost += Vertex.euclidean_distance(@path[i], @path[i+1]) }
     return cost
   end
 
+  # return random vertex from route
   def random_node
     @vertices.shuffle.first
   end
 
+  # find a vertex in a route that is closest to given vertex
   def find_closest(vertex)
     closest = @vertices.first
     closest_distance = Vertex.euclidean_distance(vertex, closest)
@@ -40,12 +53,14 @@ class Route
   end
 
   def add_node(vertex, position_vertex)
-    position = @route.index(position_vertex)
-    @route.insert(position, vertex)
+    position = @vertices.index(position_vertex)
+    @vertices.insert(position, vertex)
+    create_path
   end
 
   def delete_node(vertex)
-    @route.delete(vertex)
+    @vertices.delete(vertex)
+    create_path
   end
 
 end

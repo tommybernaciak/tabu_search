@@ -1,12 +1,12 @@
 # @author Tomasz Bernaciak <tommybernaciak@gmail.com>
 class OutputImage
+
+  COLORS = ['#0000FF', '#FF0000', '#008000', '#800080']
 	
 	def initialize(graph, filename)
     @graph = graph
     draw_image(filename)
   end
-
-  COLORS = ['#0000FF', '#FF0000', '#800080','#008000']
 
   def draw_image(filename)
     img = Magick::ImageList.new
@@ -15,8 +15,8 @@ class OutputImage
     @graph.vertices.each do |v|
       draw_vertex(v, img)
     end
-    @graph.solution.each_with_index do |r, index|
-      (r.route.size - 1).times { |i| draw_line(img, r.route[i], r.route[i+1], COLORS[index]) }
+    @graph.solution.each_with_index do |route, index|
+      (route.path.size - 1).times { |i| draw_line(img, route.path[i], route.path[i+1], COLORS[index]) }
     end
     img.write("#{filename}.png")
   end
