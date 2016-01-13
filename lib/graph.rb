@@ -37,7 +37,7 @@ class Graph
     random1, random2 = @solution.sample(2)
     loop do
       random1, random2 = @solution.sample(2)
-      break unless random1.vertices.size < 2
+      break unless random1.vertices.size < 3
     end
     return random1, random2
   end
