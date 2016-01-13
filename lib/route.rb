@@ -18,11 +18,11 @@ class Route
   end
 
   def self.clone_route(route)
-    #puts "------------------"
-    #puts "---cloned route #{route.cost}"
+    # puts "------------------"
+    # puts "---cloned route #{route.cost}"
     new_route = Route.new(route.depot, route.vertices)
-    #puts "---new_route: #{new_route.cost}"
-    #puts "---- ERROR !!!" unless route.cost == new_route.cost 
+    # puts "---new_route: #{new_route.cost}"
+    # puts "---- ERROR !!!" unless route.cost == new_route.cost 
     return new_route
   end
 

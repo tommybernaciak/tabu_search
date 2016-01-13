@@ -2,13 +2,13 @@ require 'spec_helper'
  
 describe Route do
   before :all do
-    @depot = Vertex.new(1,35.00,35.00,0.00,0.00,30.00,0.00)
-    @vertex1 = Vertex.new(2,41.00,49.00,10.00,0.00,30.00,5.00)
-    @vertex2 = Vertex.new(3,35.00,17.00,7.00,0.00,30.00,5.00)
-    @vertex3 = Vertex.new(4,55.00,45.00,13.00,0.00,30.00,5.00)
-    @vertex4 = Vertex.new(5,55.00,20.00,19.00,0.00,30.00,5.00)
+    @depot = Vertex.new(1,10.00,10.00,0.00,0.00,30.00,0.00)
+    @vertex1 = Vertex.new(2,10.00,20.00,10.00,0.00,30.00,5.00)
+    @vertex2 = Vertex.new(3,20.00,20.00,7.00,0.00,30.00,5.00)
+    @vertex3 = Vertex.new(4,20.00,10.00,13.00,0.00,30.00,5.00)
+    @vertex4 = Vertex.new(5,15.00,10.00,19.00,0.00,30.00,5.00)
     @vertices = [@vertex1, @vertex2, @vertex3, @vertex4]
-    @other_vertex = Vertex.new(6,49.00,50.00,13.00,0.00,30.00,5.00)
+    @other_vertex = Vertex.new(6,20.00,22.00,13.00,0.00,30.00,5.00)
   end
 
   before :each do
@@ -48,7 +48,7 @@ describe Route do
   describe "#cost" do
     it "returns the correct cost of a path" do
       expect(@route.cost).not_to eq(100)
-      expect(@route.cost).to eq(132.19848847209772)
+      expect(@route.cost).to eq(40.00)
     end
   end
 
@@ -77,7 +77,7 @@ describe Route do
     it "returns a new route with the same cost as previous" do
       new_route = Route.clone_route(@route)
       expect(new_route.cost).not_to eq(150)
-      expect(new_route.cost).to eq(132.19848847209772)
+      expect(new_route.cost).to eq(40.00)
     end
   end
 
@@ -87,6 +87,24 @@ describe Route do
       expect(@route.vertices.include?(random)).to eq(true)
       expect(random).not_to eq(@depot)
       expect(random).not_to eq(@other_vertex)
+    end
+  end
+
+  describe "#find_closest" do
+    it "returns a vertex closest to other_vertex" do
+      expect(@route.find_closest(@other_vertex)).to eq(@vertex2)
+      expect(@route.find_closest(@other_vertex)).not_to eq(@vertex1)
+      expect(@route.find_closest(@other_vertex)).not_to eq(@vertex3)
+      expect(@route.find_closest(@other_vertex)).not_to eq(@depot)
+    end
+  end
+
+  describe "#add_node" do
+    it "add a new vertex to route and generate a new path" do
+      @route.add_node(@other_vertex, @vertex3)
+      expect(@route.path.size).to eq(7)
+      expect(@route.vertices.include?(@other_vertex)).to eq(true)
+      expect(@route.vertices.first(4)).to eq([@vertex1, @vertex2, @other_vertex, @vertex3])
     end
   end
 end

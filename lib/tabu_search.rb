@@ -8,7 +8,7 @@ class TabuSearch
   end
 
   def run
-    tabu_list = Array.new( @tabu_list_size )
+    #tabu_list = Array.new( @tabu_list_size )
     current = Graph.clone_graph(@graph)
     best = Graph.clone_graph(current)
     #candidate = Graph.clone( current )
