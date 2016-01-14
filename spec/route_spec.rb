@@ -7,11 +7,11 @@ describe Route do
     @vertex2 = Vertex.new(3,20.00,20.00,7.00,0.00,30.00,5.00)
     @vertex3 = Vertex.new(4,20.00,10.00,13.00,0.00,30.00,5.00)
     @vertex4 = Vertex.new(5,15.00,10.00,19.00,0.00,30.00,5.00)
-    @vertices = [@vertex1, @vertex2, @vertex3, @vertex4]
     @other_vertex = Vertex.new(6,20.00,22.00,13.00,0.00,30.00,5.00)
   end
 
   before :each do
+    @vertices = [@vertex1, @vertex2, @vertex3, @vertex4]
     @route = Route.new(@depot, @vertices)
   end
 
@@ -105,6 +105,17 @@ describe Route do
       expect(@route.path.size).to eq(7)
       expect(@route.vertices.include?(@other_vertex)).to eq(true)
       expect(@route.vertices.first(4)).to eq([@vertex1, @vertex2, @other_vertex, @vertex3])
+      expect(@route.vertices.first(4)).not_to eq([@vertex3, @vertex2, @other_vertex, @vertex1])
+    end
+  end
+
+  describe "#delete_node" do
+    it "delete node and generate a new path" do
+      @route.delete_node(@vertex2)
+      expect(@route.path.size).to eq(5)
+      expect(@route.vertices.include?(@vertex2)).to eq(false)
+      expect(@route.path.first(4)).to eq([@depot, @vertex1, @vertex3, @vertex4])
+      expect(@route.path.first(4)).not_to eq([@depot, @vertex1, @vertex2, @vertex3])
     end
   end
 end
