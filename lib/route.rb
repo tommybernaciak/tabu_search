@@ -1,6 +1,7 @@
 # @author Tomasz Bernaciak <tommybernaciak@gmail.com>
 class Route
-  attr_accessor :depot, :vertices, :path
+  attr_accessor :vertices, :path
+  attr_reader :depot
 	
   def initialize(depot, vertices)
     @depot = depot
@@ -18,11 +19,8 @@ class Route
   end
 
   def self.clone_route(route)
-    # puts "------------------"
-    # puts "---cloned route #{route.cost}"
     new_route = Route.new(route.depot, route.vertices)
-    # puts "---new_route: #{new_route.cost}"
-    # puts "---- ERROR !!!" unless route.cost == new_route.cost 
+    puts "---- ERROR !!!" unless route.cost == new_route.cost 
     return new_route
   end
 
@@ -62,5 +60,4 @@ class Route
     @vertices.delete(vertex)
     create_path
   end
-
 end
