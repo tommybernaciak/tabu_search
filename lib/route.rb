@@ -19,7 +19,9 @@ class Route
   end
 
   def self.clone_route(route)
-    new_route = Route.new(route.depot, route.vertices)
+    vertices = []
+    route.vertices.each { |v| vertices << v }
+    new_route = Route.new(route.depot, vertices)
     puts "---- ERROR !!!" unless route.cost == new_route.cost 
     return new_route
   end

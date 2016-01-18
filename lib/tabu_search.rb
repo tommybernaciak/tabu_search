@@ -4,7 +4,7 @@ class TabuSearch
   def initialize(graph)
     @graph = graph
     @tabu_list_size = 7
-    @max_iteration = 5
+    @max_iteration = 20
   end
 
   def run
@@ -25,12 +25,8 @@ class TabuSearch
       route1.delete_node(node1)
 
       if candidate.cost < current.cost
-        puts "CURRENT < CANDIDATE"
         current = Graph.clone_graph(candidate)
         best = Graph.clone_graph(candidate) if candidate.cost < best.cost
-      # add candidate to tabu list (check size)
-      else
-        puts "ELSE"
       end
     end
     return best
