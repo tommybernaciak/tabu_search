@@ -5,10 +5,10 @@ class TabuSearch
     @graph = graph
     @tabu_list_size = 7
     @max_iteration = 20
+    @tabu_list = Array.new(@tabu_list_size)
   end
 
   def run
-    #tabu_list = Array.new( @tabu_list_size )
     current = Graph.clone_graph(@graph)
     best = Graph.clone_graph(current)
     @max_iteration.times do
@@ -24,9 +24,14 @@ class TabuSearch
       route2.add_node(node1, node2)
       route1.delete_node(node1)
 
-      if candidate.cost < current.cost
-        current = Graph.clone_graph(candidate)
-        best = Graph.clone_graph(candidate) if candidate.cost < best.cost
+      if is_tabu?(candidate)
+        #do nothing?
+      else
+        if candidate.cost < current.cost
+          current = Graph.clone_graph(candidate)
+          best = Graph.clone_graph(candidate) if candidate.cost < best.cost
+        end
+        add_to_tabu_list(candidate)
       end
     end
     return best
@@ -34,11 +39,18 @@ class TabuSearch
 
   private
 
-  def is_tabu?(solution, tabu_list)
-    tabu_list.each do |forbidden_edge|
-      return true if forbidden_edge == solution
+  def is_tabu?(graph)
+    @tabu_list.each do |forbidden_move|
+      unless forbidden_move.nil?
+        return true if forbidden_move.solution == graph.solution
+      end
     end
     return false
+  end
+
+  def add_to_tabu_list(solution)
+    @tabu_list.push(solution)
+    @tabu_list.shift if @tabu_list.size > @tabu_list_size
   end
 
 end
