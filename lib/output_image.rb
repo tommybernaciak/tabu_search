@@ -1,9 +1,9 @@
 # @author Tomasz Bernaciak <tommybernaciak@gmail.com>
 class OutputImage
 
-  COLORS = ['#0000FF', '#FF0000', '#008000', '#800080']
+  COLORS = ['#0000FF', '#FF0000', '#008000', '#800080', '#8028E0', '#804010', '#308850', '#FF8800', '#808080', '#B08800']
 	
-	def initialize(graph, filename)
+  def initialize(graph, filename)
     @graph = graph
     draw_image(filename)
   end

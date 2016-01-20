@@ -22,7 +22,7 @@ class Route
     vertices = []
     route.vertices.each { |v| vertices << v }
     new_route = Route.new(route.depot, vertices)
-    puts "---- ERROR !!!" unless route.cost == new_route.cost 
+    #puts "---- ERROR !!!" unless route.cost == new_route.cost 
     return new_route
   end
 

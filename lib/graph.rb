@@ -5,7 +5,7 @@ class Graph
   def initialize(depot, vertices)
     @depot = depot
     @vertices = vertices
-    @vehicles_numer = 3
+    @vehicles_numer = 10
     @solution = []
   end
 
