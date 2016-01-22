@@ -43,6 +43,13 @@ class Graph
     return distance
   end
 
+  # caluculate distance of solution
+  def service_time
+    service_time = 0
+    @solution.each { |route| service_time += route.service_time }
+    return service_time
+  end
+
   # caluculate cost of solution
   def cost
     cost = 0

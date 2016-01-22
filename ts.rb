@@ -14,8 +14,8 @@ graph = Graph.new(depot, vertices)
 graph.initial_solution
 
 puts "----- INITIAL SOLUTION:"
-puts "distance: #{graph.distance}"
-puts "demands:"
+puts "-- distance: #{graph.distance}"
+puts "-- demands:"
 graph.solution.each do |route|
   puts route.demand
 end
@@ -24,8 +24,8 @@ OutputImage.new(graph, 'initial_solution')
 result_graph = TabuSearch.new(graph).run 
 
 puts "----- RESULT SOLUTION:"
-puts "distance: #{result_graph.distance}"
-puts "demands:"
+puts "-- distance: #{result_graph.distance}"
+puts "-- demands:"
 result_graph.solution.each do |route|
   puts route.demand
 end

@@ -48,6 +48,13 @@ class Route
     return cost
   end
 
+  # caluculate service_time of full path
+  def service_time
+    service_time = 0
+    (@path.size - 1).times { |i| service_time += @path[i].service_time }
+    return service_time
+  end
+
   # return random vertex from route
   def random_node
     @vertices.shuffle.first
