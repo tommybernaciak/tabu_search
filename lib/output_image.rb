@@ -1,8 +1,8 @@
 # @author Tomasz Bernaciak <tommybernaciak@gmail.com>
 class OutputImage
 
-  COLORS = ['#0000FF', '#FF0000', '#008000', '#800080', '#8028E0', '#804010', '#308850', '#FF8800', '#808080', '#B08800']
-	
+  COLORS = ['#0000e6', '#FF0000', '#ff66ff', '#862d86', '#8c8c8c', '#000000', '#43bc6f', '#FF8800', '#4da6ff', '#e5e600']
+	#        [ dark blue, red, pink, purple, grey, black, light green, orange, light blue, yellow ]
   def initialize(graph, filename)
     @graph = graph
     draw_image(filename)
@@ -54,7 +54,7 @@ class OutputImage
   def draw_line(image, vertex1, vertex2, color)
     line = Magick::Draw.new
     x1, y1, x2, y2 = line_coordinates(vertex1, vertex2)
-    line.stroke(color).stroke_width(1)
+    line.stroke(color).stroke_width(2)
     line.line(x1, y1, x2, y2)
     line.draw(image)
   end

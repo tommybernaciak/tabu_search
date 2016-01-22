@@ -6,13 +6,41 @@ class Graph
     @depot = depot
     @vertices = vertices
     @vehicles_numer = 10
+    @vehicle_capacity = 200
     @solution = []
   end
 
-  # shuffle vertices, split then to random arrays, generate routes and add them to solution
+  # shuffle vertices, generate routes of given capacity and add them to solution
   def initial_solution
-    vertices = random_split(@vertices, @vehicles_numer)
-    generate_routes(vertices, @depot).each { |route| @solution << route }
+    arrays_of_vertices = Array.new(@vehicles_numer) { Array.new }
+    shuffled_vertices = @vertices.shuffle
+    arrays_of_vertices.each do |route|
+      route_capacity = 0
+      while (route_capacity < @vehicle_capacity && shuffled_vertices.size > 0)
+        vertex = shuffled_vertices.first
+        route_capacity += vertex.demand
+        if route_capacity > @vehicle_capacity
+          break 
+        else
+          route << vertex
+          shuffled_vertices.delete(vertex)
+        end
+      end
+    end
+    generate_routes(arrays_of_vertices, @depot).each { |route| @solution << route }
+  end
+
+  def generate_routes(arrays_of_vertices, depot)
+    routes = Array.new
+    arrays_of_vertices.each { |arr| routes << Route.new(depot, arr, @vehicle_capacity) }
+    return routes
+  end
+
+  # caluculate distance of solution
+  def distance
+    distance = 0
+    @solution.each { |route| distance += route.distance }
+    return distance
   end
 
   # caluculate cost of solution
@@ -43,17 +71,6 @@ class Graph
   end
 
   private
-
-  def random_split(array, number)
-    slice_size = (array.size/Float(number)).ceil
-    array.shuffle.each_slice(slice_size).to_a
-  end
-
-  def generate_routes(arrays_of_vertices, depot)
-    routes = Array.new
-    arrays_of_vertices.each { |arr| routes << Route.new(depot, arr) }
-    return routes
-  end
 
   # import graph from csv
   def self.import_data(filename)

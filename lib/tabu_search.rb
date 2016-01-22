@@ -13,13 +13,9 @@ class TabuSearch
     best = Graph.clone_graph(current)
     @max_iteration.times do
       candidate = Graph.clone_graph(current)
-      # tabu search
       # choose two random routes
-      route1, route2 = candidate.random_routes
-      # choose random node from r1
-      node1 = route1.random_node
-      # find closest node from r2
-      node2 = route2.find_closest(node1)
+      # choose random node from r1 and find closest node from r2
+      route1, route2, node1, node2 = select_nodes(candidate)
       # relocate n1 from r1 to r2, place it before n2
       route2.add_node(node1, node2)
       route1.delete_node(node1)
@@ -36,6 +32,17 @@ class TabuSearch
   end
 
   private
+
+  # choose two random routes
+  # choose random node from r1 and find closest node from r2
+  def select_nodes(graph)
+    loop do
+      route1, route2 = graph.random_routes
+      node1 = route1.random_node
+      node2 = route2.find_closest(node1)
+      return route1, route2, node1, node2 if (route2.demand + node1.demand) < route2.capacity
+    end
+  end
 
   # check if given graph is on tabu_list
   def is_tabu?(graph)

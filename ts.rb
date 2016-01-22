@@ -12,8 +12,21 @@ require './lib/tabu_search.rb'
 depot, vertices = Graph.import_data('./data/test.csv')
 graph = Graph.new(depot, vertices)
 graph.initial_solution
-puts "initial solution cost: #{graph.cost}"
+
+puts "----- INITIAL SOLUTION:"
+puts "distance: #{graph.distance}"
+puts "demands:"
+graph.solution.each do |route|
+  puts route.demand
+end
 OutputImage.new(graph, 'initial_solution')
+
 result_graph = TabuSearch.new(graph).run 
-puts "result solution cost: #{result_graph.cost}"
+
+puts "----- RESULT SOLUTION:"
+puts "distance: #{result_graph.distance}"
+puts "demands:"
+result_graph.solution.each do |route|
+  puts route.demand
+end
 OutputImage.new(result_graph, 'result')

@@ -1,11 +1,12 @@
 # @author Tomasz Bernaciak <tommybernaciak@gmail.com>
 class Route
   attr_accessor :vertices, :path
-  attr_reader :depot
+  attr_reader :depot, :capacity
 	
-  def initialize(depot, vertices)
+  def initialize(depot, vertices, capacity)
     @depot = depot
     @vertices = vertices
+    @capacity = capacity
     @path = []
     create_path
   end
@@ -21,12 +22,26 @@ class Route
   def self.clone_route(route)
     vertices = []
     route.vertices.each { |v| vertices << v }
-    new_route = Route.new(route.depot, vertices)
+    new_route = Route.new(route.depot, vertices, route.capacity)
     #puts "---- ERROR !!!" unless route.cost == new_route.cost 
     return new_route
   end
 
   # caluculate distance of full path
+  def distance
+    distance = 0
+    (@path.size - 1).times { |i| distance += Vertex.euclidean_distance(@path[i], @path[i+1]) }
+    return distance
+  end
+
+  # caluculate demand of full path
+  def demand
+    demand = 0
+    (@path.size - 1).times { |i| demand += @path[i].demand }
+    return demand
+  end
+
+  # caluculate cost of full path
   def cost
     cost = 0
     (@path.size - 1).times { |i| cost += Vertex.euclidean_distance(@path[i], @path[i+1]) }
