@@ -15,6 +15,8 @@ graph.initial_solution
 
 puts "----- INITIAL SOLUTION:"
 puts "-- distance: #{graph.distance}"
+puts "-- travel time: #{graph.travel_time}"
+puts "-- cost: #{graph.cost}"
 puts "-- demands:"
 graph.solution.each do |route|
   puts route.demand
@@ -25,6 +27,8 @@ result_graph = TabuSearch.new(graph).run
 
 puts "----- RESULT SOLUTION:"
 puts "-- distance: #{result_graph.distance}"
+puts "-- travel time: #{result_graph.travel_time}"
+puts "-- cost: #{result_graph.cost}"
 puts "-- demands:"
 result_graph.solution.each do |route|
   puts route.demand

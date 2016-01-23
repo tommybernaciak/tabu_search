@@ -10,6 +10,7 @@ class Vertex
     @ready_time = ready_time
     @due_time = due_time
     @service_time = service_time
+    penalty_coefficient = 1
   end
 
   def self.euclidean_distance(v1, v2)

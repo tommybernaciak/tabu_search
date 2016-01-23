@@ -32,7 +32,10 @@ class Graph
 
   def generate_routes(arrays_of_vertices, depot)
     routes = Array.new
-    arrays_of_vertices.each { |arr| routes << Route.new(depot, arr, @vehicle_capacity) }
+    arrays_of_vertices.each do |arr| 
+      arr.sort! { |a,b| a.ready_time <=> b.ready_time }
+      routes << Route.new(depot, arr, @vehicle_capacity)
+    end
     return routes
   end
 
@@ -53,8 +56,15 @@ class Graph
   # caluculate cost of solution
   def cost
     cost = 0
-    @solution.each { |route| cost += route.cost }
+    @solution.each { |route| cost += route.travel_time_and_cost[0] }
     return cost
+  end
+
+  # caluculate cost of solution
+  def travel_time
+    travel_time = 0
+    @solution.each { |route| travel_time += route.travel_time_and_cost[1] }
+    return travel_time
   end
 
   # create a copy of graph object

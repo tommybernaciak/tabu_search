@@ -41,11 +41,26 @@ class Route
     return demand
   end
 
-  # caluculate cost of full path
-  def cost
+  # caluculate cost of full path / time windows
+  def travel_time_and_cost
+    penalty_coefficient = 1
     cost = 0
-    (@path.size - 1).times { |i| cost += Vertex.euclidean_distance(@path[i], @path[i+1]) }
-    return cost
+    travel_time = 0
+    (@path.size - 1).times do |i|
+      current_vertex = @path[i]
+      next_vertex = @path[i+1]
+      # travel time = travel distance
+      distance = Vertex.euclidean_distance(current_vertex, next_vertex)
+      travel_time += distance
+      # calculate how early or how late is service
+      early_cost = (next_vertex.ready_time - travel_time) > 0 ? (next_vertex.ready_time - travel_time) : 0
+      late_cost = (travel_time - next_vertex.due_time) > 0 ? (travel_time - next_vertex.due_time) : 0
+      # calculate penalty cost
+      cost += early_cost * penalty_coefficient + late_cost * penalty_coefficient
+      # add service_time and early_cost (wait-for-service time) to travel time
+      travel_time += next_vertex.service_time + early_cost
+    end
+    return cost, travel_time
   end
 
   # caluculate service_time of full path

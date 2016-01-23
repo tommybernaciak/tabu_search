@@ -4,7 +4,7 @@ class TabuSearch
   def initialize(graph)
     @graph = graph
     @tabu_list_size = 7
-    @max_iteration = 5000
+    @max_iteration = 10000
     @tabu_list = Array.new(@tabu_list_size)
   end
 
