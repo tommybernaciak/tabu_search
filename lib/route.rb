@@ -3,10 +3,11 @@ class Route
   attr_accessor :vertices, :path
   attr_reader :depot, :capacity
 	
-  def initialize(depot, vertices, capacity)
+  def initialize(depot, vertices, capacity, penalty_coefficient=1.0)
     @depot = depot
     @vertices = vertices
     @capacity = capacity
+    @penalty_coefficient = penalty_coefficient
     @path = []
     create_path
   end
@@ -23,7 +24,6 @@ class Route
     vertices = []
     route.vertices.each { |v| vertices << v }
     new_route = Route.new(route.depot, vertices, route.capacity)
-    #puts "---- ERROR !!!" unless route.cost == new_route.cost 
     return new_route
   end
 
@@ -43,7 +43,6 @@ class Route
 
   # caluculate cost of full path / time windows
   def travel_time_and_cost
-    penalty_coefficient = 1
     cost = 0
     travel_time = 0
     (@path.size - 1).times do |i|
@@ -56,7 +55,7 @@ class Route
       early_cost = (next_vertex.ready_time - travel_time) > 0 ? (next_vertex.ready_time - travel_time) : 0
       late_cost = (travel_time - next_vertex.due_time) > 0 ? (travel_time - next_vertex.due_time) : 0
       # calculate penalty cost
-      cost += early_cost * penalty_coefficient + late_cost * penalty_coefficient
+      cost += early_cost * @penalty_coefficient + late_cost * @penalty_coefficient
       # add service_time and early_cost (wait-for-service time) to travel time
       travel_time += next_vertex.service_time + early_cost
     end

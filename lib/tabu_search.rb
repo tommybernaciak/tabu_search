@@ -1,10 +1,10 @@
 # @author Tomasz Bernaciak <tommybernaciak@gmail.com>
 class TabuSearch
 
-  def initialize(graph)
+  def initialize(graph, tabu_list_size=7, max_iteration=10000)
     @graph = graph
-    @tabu_list_size = 7
-    @max_iteration = 10000
+    @tabu_list_size = tabu_list_size
+    @max_iteration = max_iteration
     @tabu_list = Array.new(@tabu_list_size)
   end
 
@@ -36,12 +36,12 @@ class TabuSearch
   # choose two random routes
   # choose random node from r1 and find closest node from r2
   def select_nodes(graph)
-    loop do
+    begin
       route1, route2 = graph.random_routes
       node1 = route1.random_node
       node2 = route2.find_closest(node1)
-      return route1, route2, node1, node2 if (route2.demand + node1.demand) < route2.capacity
-    end
+    end while ( (route2.demand + node1.demand) > graph.vehicle_capacity )
+    return route1, route2, node1, node2
   end
 
   # check if given graph is on tabu_list
@@ -59,5 +59,4 @@ class TabuSearch
     @tabu_list.push(solution)
     @tabu_list.shift if @tabu_list.size > @tabu_list_size
   end
-
 end

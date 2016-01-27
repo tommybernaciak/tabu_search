@@ -9,7 +9,7 @@ require './lib/route.rb'
 require './lib/vertex.rb'
 require './lib/tabu_search.rb'
 
-filename = "r101"
+filename = ARGV[0]
 depot, vertices = Graph.import_data("./data/#{filename}.csv")
 graph = Graph.new(depot, vertices)
 graph.initial_solution

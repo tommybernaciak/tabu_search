@@ -1,33 +1,25 @@
 # @author Tomasz Bernaciak <tommybernaciak@gmail.com>
 class Graph
 	attr_accessor :vertices, :depot, :routes, :solution
+  attr_reader :vehicle_capacity
 	
-  def initialize(depot, vertices)
+  def initialize(depot, vertices, vehicles_numer=10, vehicle_capacity=200)
     @depot = depot
     @vertices = vertices
-    @vehicles_numer = 8
-    @vehicle_capacity = 200
+    @vehicles_numer = vehicles_numer
+    @vehicle_capacity = vehicle_capacity
     @solution = []
   end
 
   # shuffle vertices, generate routes of given capacity and add them to solution
   def initial_solution
-    arrays_of_vertices = Array.new(@vehicles_numer) { Array.new }
-    shuffled_vertices = @vertices.shuffle
-    arrays_of_vertices.each do |route|
-      route_capacity = 0
-      while (route_capacity < @vehicle_capacity && shuffled_vertices.size > 0)
-        vertex = shuffled_vertices.first
-        route_capacity += vertex.demand
-        if route_capacity > @vehicle_capacity
-          break 
-        else
-          route << vertex
-          shuffled_vertices.delete(vertex)
-        end
-      end
+    loop do
+      arrays_of_vertices = Array.new(@vehicles_numer) { Array.new }
+      shuffled = @vertices.shuffle
+      arrays_of_vertices = shuffled.each_slice(@vehicles_numer).to_a.reduce(&:zip).map(&:flatten).transpose.map(&:compact)
+      generate_routes(arrays_of_vertices, @depot).each { |route| @solution << route }
+      break if routes_are_correct?
     end
-    generate_routes(arrays_of_vertices, @depot).each { |route| @solution << route }
   end
 
   def generate_routes(arrays_of_vertices, depot)
@@ -37,6 +29,15 @@ class Graph
       routes << Route.new(depot, arr, @vehicle_capacity)
     end
     return routes
+  end
+
+  # check if route.demand < vehicle_capacity
+  def routes_are_correct?
+    @solution.each do |route|
+      puts route.demand
+      return false if route.demand > @vehicle_capacity
+    end
+    return true
   end
 
   # caluculate distance of solution
