@@ -14,12 +14,18 @@ class Graph
   # shuffle vertices, generate routes of given capacity and add them to solution
   def initial_solution
     loop do
-      arrays_of_vertices = Array.new(@vehicles_numer) { Array.new }
-      shuffled = @vertices.shuffle
-      arrays_of_vertices = shuffled.each_slice(@vehicles_numer).to_a.reduce(&:zip).map(&:flatten).transpose.map(&:compact)
-      generate_routes(arrays_of_vertices, @depot).each { |route| @solution << route }
+      # clear solution after each iteration
+      @solution = []
+      vertices = shuffle_and_slice_vertices
+      generate_routes(vertices, @depot).each { |route| @solution << route }
       break if routes_are_correct?
     end
+  end
+
+  def shuffle_and_slice_vertices
+    arrays_of_vertices = Array.new(@vehicles_numer) { Array.new }
+    arrays_of_vertices = @vertices.shuffle.each_slice(@vehicles_numer).to_a.reduce(&:zip).map(&:flatten).transpose.map(&:compact)
+    return arrays_of_vertices
   end
 
   def generate_routes(arrays_of_vertices, depot)
