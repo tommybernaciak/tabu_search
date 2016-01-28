@@ -40,7 +40,6 @@ class Graph
   # check if route.demand < vehicle_capacity
   def routes_are_correct?
     @solution.each do |route|
-      puts route.demand
       return false if route.demand > @vehicle_capacity
     end
     return true

@@ -1,7 +1,7 @@
 # @author Tomasz Bernaciak <tommybernaciak@gmail.com>
 class TabuSearch
 
-  def initialize(graph, tabu_list_size=7, max_iteration=30000)
+  def initialize(graph, tabu_list_size=7, max_iteration=50000)
     @graph = graph
     @tabu_list_size = tabu_list_size
     @max_iteration = max_iteration
