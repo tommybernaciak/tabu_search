@@ -3,7 +3,7 @@ class Graph
 	attr_accessor :vertices, :depot, :routes, :solution
   attr_reader :vehicle_capacity
 	
-  def initialize(depot, vertices, vehicles_numer=3, vehicle_capacity=1000)
+  def initialize(depot, vertices, vehicles_numer=2, vehicle_capacity=1000)
     @depot = depot
     @vertices = vertices
     @vehicles_numer = vehicles_numer

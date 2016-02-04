@@ -1,7 +1,7 @@
 # @author Tomasz Bernaciak <tommybernaciak@gmail.com>
 class TabuSearch
 
-  def initialize(graph, tabu_list_size=7, max_iteration=20000)
+  def initialize(graph, tabu_list_size=7, max_iteration=120000)
     @graph = graph
     @tabu_list_size = tabu_list_size
     @max_iteration = max_iteration
@@ -24,6 +24,11 @@ class TabuSearch
         if candidate.cost < current.cost
           current = Graph.clone_graph(candidate)
           best = Graph.clone_graph(candidate) if candidate.cost < best.cost
+        elsif candidate.cost == 0
+          if candidate.distance < current.distance
+            current = Graph.clone_graph(candidate)
+            best = Graph.clone_graph(candidate) if candidate.distance < best.distance
+          end
         end
         add_to_tabu_list(candidate)
       end

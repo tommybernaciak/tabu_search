@@ -19,8 +19,6 @@ puts "----- INITIAL SOLUTION:"
 puts "-- distance: #{graph.distance}"
 puts "-- travel time: #{graph.travel_time}"
 puts "-- cost: #{graph.cost}"
-# puts "-- demands:"
-# puts graph.solution.size
 
 OutputImage.new(graph, "#{filename}-initial_solution")
 
@@ -34,10 +32,13 @@ puts "----- RESULT SOLUTION:"
 puts "-- distance: #{result_graph.distance}"
 puts "-- travel time: #{result_graph.travel_time}"
 puts "-- cost: #{result_graph.cost}"
-# puts "-- demands:"
-# result_graph.solution.each do |route|
-#   puts route.demand
-# end
+puts "-- routes:"
+result_graph.solution.each do |route|
+	puts "route:"
+  route.path.each do |vertex|
+  	puts vertex.id
+  end
+end
 OutputImage.new(result_graph, "#{filename}-result")
 puts "----- ALGORITHM TIME:"
 puts time
