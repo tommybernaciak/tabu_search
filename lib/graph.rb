@@ -3,7 +3,7 @@ class Graph
 	attr_accessor :vertices, :depot, :routes, :solution
   attr_reader :vehicle_capacity
 	
-  def initialize(depot, vertices, vehicles_numer=10, vehicle_capacity=200)
+  def initialize(depot, vertices, vehicles_numer=3, vehicle_capacity=1000)
     @depot = depot
     @vertices = vertices
     @vehicles_numer = vehicles_numer
@@ -24,7 +24,7 @@ class Graph
 
   def shuffle_and_slice_vertices
     arrays_of_vertices = Array.new(@vehicles_numer) { Array.new }
-    arrays_of_vertices = @vertices.shuffle.each_slice(@vehicles_numer).to_a.reduce(&:zip).map(&:flatten).transpose.map(&:compact)
+    arrays_of_vertices = @vertices.shuffle.each_slice((100.0/@vehicles_numer).ceil).to_a.reduce(&:zip).map(&:flatten).transpose.map(&:compact)
     return arrays_of_vertices
   end
 

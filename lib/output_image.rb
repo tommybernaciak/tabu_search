@@ -1,8 +1,8 @@
 # @author Tomasz Bernaciak <tommybernaciak@gmail.com>
 class OutputImage
 
-  COLORS = ['#0000e6', '#FF0000', '#ff66ff', '#862d86', '#8c8c8c', '#000000', '#43bc6f', '#FF8800', '#4da6ff', '#e5e600']
-	#        [ dark blue, red, pink, purple, grey, black, light green, orange, light blue, yellow ]
+  COLORS = ['#0000e6', '#FF0000', '#000000', '#862d86', '#8c8c8c', '#ff66ff', '#43bc6f', '#FF8800', '#4da6ff', '#e5e600', '#333333', '#4d2600' ]
+
   def initialize(graph, filename)
     @graph = graph
     draw_image(filename)
